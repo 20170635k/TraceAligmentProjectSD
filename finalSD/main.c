@@ -142,3 +142,21 @@ void imprimematrizchar(char** t, int c,int l){
     }
      printf("\n");
 }
+
+void arbolguia(char** t,int tam){
+    int col=0;
+    int row=0;
+    int mindist=100;
+    for(int i=0;i<tam-1;i++){
+        for(int j=0;j<i;j++){
+
+            if(*(*(mdist+col)+j)<mindist&&col!=j){
+
+                mindist=*(*(mdist+col)+j);
+                row=j;
+            }
+        }
+        // FARTA ARREGLAR AQUÍ
+        col=row;
+    }
+}
