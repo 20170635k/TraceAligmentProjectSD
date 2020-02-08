@@ -12,14 +12,14 @@
 extern "C" {
 #endif
 
-size_t
-levenshtein(const char *a, const char *b);
+size_t levenshtein(const char *a, const char *b);
 
-size_t
-levenshtein_n (const char *a, const size_t length, const char *b, const size_t bLength);
+size_t levenshtein_n (const char *a, const size_t length, const char *b, const size_t bLength);
 
 #ifdef __cplusplus
 }
+void matrizDistancia(int ** t);
+
 #endif
 
 #endif // LEVENSHTEIN_H

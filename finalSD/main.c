@@ -2,11 +2,35 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include "levenshtein.h"
+#include <stdio.h>
+
+char ** trazas;
+int **mdist;
+char *abc="abcdefghijklmnopqrstuvwxyz";
 int main()
 {
-    printf("distancia %d :",levenshtein("vanano", "macaco"));
-    return 0;
+    int canttrazas=10;
+    int tamtraza=10;
+
+    trazas= malloc(sizeof(char*)*canttrazas);
+    for(int i=0;i<canttrazas;i++){
+        *(trazas+i)=malloc(sizeof(char)*tamtraza);
+    }
+
+    cargarTrazas(trazas,canttrazas,tamtraza);
+    mdist=malloc(sizeof(int*)*canttrazas);
+    for(int i=0;i<canttrazas;i++){
+        *(mdist+i)=malloc(sizeof(int)*canttrazas);
+    }
+    cargarmdist(mdist,canttrazas);
+
+    imprimematrizchar(trazas,canttrazas);
+    matrizDistancia(mdist,canttrazas);
+    imprimematrizint(mdist,canttrazas);
+
+ return 0;
 }
+
 // `levenshtein.c` - levenshtein
 // MIT licensed.
 // Copyright (c) 2015 Titus Wormer <tituswormer@gmail.com>
@@ -68,4 +92,53 @@ size_t levenshtein(const char *a, const char *b) {
   const size_t bLength = strlen(b);
 
   return levenshtein_n(a, length, b, bLength);
+}
+
+/*--------------------------------------------------------------------------------------*/
+
+void matrizDistancia(int ** d,int col){
+    for(int i=0;i<col;i++){
+        for(int j=0;j<i;j++){
+           int dtemp=levenshtein(*(trazas+i),*(trazas+j));
+           *(*(mdist+i)+j)=dtemp;
+           *(*(mdist+j)+i)=dtemp;
+        }
+    }
+}
+//GENERA VALORES PARA LAS TRAZAS
+void cargarTrazas(char** t, int c,int l){
+    for(int i=0;i<c;i++){
+        for(int j=0;j<l;j++){
+            *(*(t+i)+j)=*(abc+(((i*j)+j)%26));
+        }
+    }
+}
+//INICIALIZA LA MATRIZ DISTANCIA EN 0
+void cargarmdist(int** t, int c){
+    for(int i=0;i<c;i++){
+        for(int j=0;j<c;j++){
+            *(*(t+i)+j)=0;
+        }
+    }
+}
+
+//IMPRIME LA MATRIZ DISTANCIA
+void imprimematrizint(int** t, int c){
+    for(int i=0;i<c;i++){
+        for(int j=0;j<c;j++){
+            printf("%d\t",*(*(t+i)+j));
+        }
+        printf("\n");
+    }
+     printf("\n");
+}
+//IMPRIME LAS TRAZAS
+void imprimematrizchar(char** t, int c,int l){
+    for(int i=0;i<c;i++){
+        for(int j=0;j<l;j++){
+            printf("%c",*(*(t+i)+j));
+        }
+        printf("\n");
+    }
+     printf("\n");
 }
